@@ -16,6 +16,7 @@
         <nav>
             <a href="/">HOME</a>
             <a href="/register">REGISTER</a>
+            <a href="/login">LOGIN</a>
         </nav>
     </header>
     <section>

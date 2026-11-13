@@ -3,9 +3,8 @@ require_once("router.php");
 require_once("response.php");
 
 App::get("/", "views/home");
-
-
 App::get("/register", "views/register");
+App::get("/login", "views/login");
 
 App::post("/register", function(){
     if (empty($_POST['email']) || empty($_POST['password'])){
@@ -21,4 +20,55 @@ App::post("/register", function(){
         Res::redirect_error("/register", "Minst 4 tecken på lösenord");
         return;
     }
-}); 
+
+    $users = json_decode(file_get_contents("users.json"), true);
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $userFinns = array_find($users, function ($user) use($email) {
+        return $user['email'] == $email;
+    });
+
+    if($userFinns == True){
+        Res::redirect_error("/register", "Användare finns redan");
+        return;
+    }
+
+    $id = uniqid(true);
+    $users[] = [
+        "email" => $email,
+        "password" => password_hash($password, PASSWORD_DEFAULT),
+        "id" => $id
+    ];
+
+    file_put_contents("users.json", json_encode($users, JSON_PRETTY_PRINT));
+    Res::redirect("/register", "Register lyckades");
+});
+
+App::post("/login", function(){
+
+    $users = json_decode(file_get_contents("users.json"), true);
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+
+    $userFinns = array_find($users, function ($user) use($email) {
+        return $user['email'] == $email;
+    });
+
+    if($userFinns != True){
+        Res::redirect_error("/login", "Användare finns inte");
+        return;
+    }
+
+    if(!password_verify($password, $userFinns['password'])){
+        Res::redirect_error("/login", "Fel lösenord");
+        return;
+    }
+
+    $_SESSION["auth"] = True;
+    $_SESSION['email'] = $email;
+    $_SESSION['uid'] = $userFinns['id'];
+
+    Res::redirect("/", "LOGGED IN");
+});
+
