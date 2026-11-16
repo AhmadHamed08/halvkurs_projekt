@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Halvkurs</title>
     <style>
         <?php
             include("style.css");
@@ -17,6 +17,9 @@
             <a href="/">HOME</a>
             <a href="/register">REGISTER</a>
             <a href="/login">LOGIN</a>
+            <a href="/logout">LOGOUT</a>
+            <a href="/posts/create">CREATE POST</a>
+            <a href="/session">SESSION</a>
         </nav>
     </header>
     <section>

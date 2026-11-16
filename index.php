@@ -1,4 +1,9 @@
 <?php
+
+session_start([
+    'cookie_httponly' => true,
+]);
+
 require_once("router.php");
 require_once("response.php");
 
@@ -55,7 +60,7 @@ App::post("/login", function(){
         return $user['email'] == $email;
     });
 
-    if($userFinns != True){
+    if($userFinns != true){
         Res::redirect_error("/login", "Användare finns inte");
         return;
     }
@@ -65,10 +70,20 @@ App::post("/login", function(){
         return;
     }
 
-    $_SESSION["auth"] = True;
+    $_SESSION["auth"] = true;
     $_SESSION['email'] = $email;
     $_SESSION['uid'] = $userFinns['id'];
 
     Res::redirect("/", "LOGGED IN");
 });
 
+App::get("/session", function(){
+    Res::debug($_SESSION);
+});
+
+App::get("/logout", function(){
+    session_destroy();
+    Res::redirect("/", "LOGGED OUT");
+});
+
+App::any("/404", "views/404");
