@@ -100,6 +100,6 @@ App::post("/posts", function(){
     Posts::create($title, $text, $_SESSION['uid']);
     Res::redirect("/", "Post created");
 });
-#test git
+
 
 App::any("/404", "views/404");

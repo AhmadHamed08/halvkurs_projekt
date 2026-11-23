@@ -24,4 +24,15 @@ class Posts
         array_push($posts, $post);
         self::saveAll($posts);
     }
+
+    public static function delete($id, $uid){
+        $posts = self::getAll();
+
+        $i = array_find_key($posts, function($p) use($id, $uid){
+            return $p['id'] == $id && $p['uid'] == $uid;
+        });
+
+        unset($posts[$i]);
+        self::saveAll($posts);
+    }
 }   

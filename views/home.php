@@ -13,6 +13,11 @@ foreach($posts as $p):
         <h2><?php App::out($title) ?></h2>
         <p><?php App::out($text) ?></p>
 
+        <?php if(!empty($_SESSION['uid']) && $uid == $_SESSION['uid']): ?>
+            <a href="/posts/delete/<?php $id ?>">DELETE</a>
+
+        <?php endif ?>
+
     </div>
 
 <?php
