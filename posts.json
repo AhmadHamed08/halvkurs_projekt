@@ -1,1 +1,14 @@
-[]
+[
+    {
+        "id": "6b004d479c633",
+        "title": "test",
+        "text": "test post",
+        "uid": "16af714385b86b"
+    },
+    {
+        "id": "6b0053543c654",
+        "title": "test2",
+        "text": "testing again",
+        "uid": "16af714385b86b"
+    }
+]

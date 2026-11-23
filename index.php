@@ -6,10 +6,21 @@ session_start([
 
 require_once("router.php");
 require_once("response.php");
+require_once("postsModel.php");
 
 App::get("/", "views/home");
 App::get("/register", "views/register");
 App::get("/login", "views/login");
+App::get("/posts/create", "views/createPost");
+
+App::get("/session", function(){
+    Res::debug($_SESSION);
+});
+
+App::get("/logout", function(){
+    session_destroy();
+    Res::redirect("/", "LOGGED OUT");
+});
 
 App::post("/register", function(){
     if (empty($_POST['email']) || empty($_POST['password'])){
@@ -77,13 +88,18 @@ App::post("/login", function(){
     Res::redirect("/", "LOGGED IN");
 });
 
-App::get("/session", function(){
-    Res::debug($_SESSION);
+App::post("/posts", function(){
+    if(empty($_SESSION['uid'])){
+        Res::redirect_error("/login", "Måste vara inloggad för att skapa post");
+        return;
+    }
+
+    $title = $_POST["title"];
+    $text = $_POST["text"];
+
+    Posts::create($title, $text, $_SESSION['uid']);
+    Res::redirect("/", "Post created");
 });
 
-App::get("/logout", function(){
-    session_destroy();
-    Res::redirect("/", "LOGGED OUT");
-});
 
 App::any("/404", "views/404");
