@@ -101,5 +101,20 @@ App::post("/posts", function(){
     Res::redirect("/", "Post created");
 });
 
+App::get('/posts/delete/$id', function($id){
+    if(empty($_SESSION['uid'])){
+        Res::redirect_error("/", "Måste vara inloggad");
+        return;
+    }
+
+    $delete = Posts::delete($id, $_SESSION['uid']);
+
+    if($delete){
+        res::redirect("/", "");
+    }
+
+    res::redirect("/", "DELETE ERROR");
+});
+
 
 App::any("/404", "views/404");

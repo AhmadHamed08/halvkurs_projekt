@@ -32,7 +32,11 @@ class Posts
             return $p['id'] == $id && $p['uid'] == $uid;
         });
 
-        unset($posts[$i]);
-        self::saveAll($posts);
+        if($i > -1){
+            unset($posts[$i]);
+            self::saveAll($posts);
+            return true;
+        }
+        return false;
     }
 }   
